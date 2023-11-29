@@ -1,0 +1,5 @@
+Control AppleTV with:
+https://github.com/postlund/pyatv
+
+Get an HLS server for AppleTV/Chromecast with:
+https://github.com/gwuhaolin/livego
