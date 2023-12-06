@@ -30,6 +30,7 @@ if [ -n "$stream_url" ]; then
     -f x11grab -video_size 1280x720 -framerate 30 -i $DISPLAY \
     -f alsa -i pulse -ac 2 \
     -c:v libx264 -preset veryfast -c:a aac -strict experimental \
+    -copyts \
     -f flv "$stream_url"
 else
   cat
