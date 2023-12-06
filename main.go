@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/chromedp/chromedp"
 )
@@ -55,10 +56,12 @@ func main() {
 	// ctx, cancel = context.WithTimeout(ctx, 15*time.Second)
 	// defer cancel()
 
+	startPage := os.Args[1]
+
 	// navigate to a page, wait for an element, click
 	var example string
 	err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://pkg.go.dev/time`),
+		chromedp.Navigate(startPage),
 		// wait for footer element is visible (ie, page is loaded)
 		chromedp.WaitVisible(`body > footer`),
 		// find and click "Example" link
