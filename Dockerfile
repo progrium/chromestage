@@ -1,7 +1,7 @@
 FROM golang:1.21-alpine as builder
 WORKDIR /chromestage
 
-COPY go.mod . 
+COPY go.mod .
 COPY go.sum .
 
 RUN apk add --no-cache ca-certificates git
@@ -22,7 +22,10 @@ RUN apt-get update
 RUN apt-get -y install wget --fix-missing
 RUN apt-get -y install xvfb xorg x11vnc firefox xterm dbus-x11 xfonts-100dpi xfonts-75dpi xfonts-cyrillic --fix-missing # chrome will use this to run headlessly
 RUN apt-get -y install unzip xterm --fix-missing
+RUN apt-get -y install pulseaudio
 RUN apt-get -y install ffmpeg
+
+RUN adduser root pulse-access
 
 # install go
 RUN wget -O - 'https://storage.googleapis.com/golang/go1.21.3.linux-amd64.tar.gz' | tar xz -C /usr/local/
