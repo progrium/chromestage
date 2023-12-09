@@ -58,8 +58,15 @@ EXPOSE 5900
 # chromedp
 EXPOSE 9222
 
+RUN groupadd -r chromium && useradd -r -g chromium -G audio,video,pulse-access chromium \
+  && mkdir -p /home/chromium/Downloads && chown -R chromium:chromium /home/chromium
+
 RUN apt-get install -y ca-certificates tzdata
 COPY --from=builder /go/bin /bin
-COPY /start.sh /
-RUN chmod +x /start.sh
-ENTRYPOINT ["/start.sh"]
+COPY /start.sh /home/chromium/start.sh
+RUN chmod +x /home/chromium/start.sh
+
+# Run as non privileged user
+USER chromium
+WORKDIR /home/chromium
+ENTRYPOINT ["/home/chromium/start.sh"]
