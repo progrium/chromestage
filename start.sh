@@ -17,7 +17,7 @@ pulseaudio -D --verbose --exit-idle-time=-1 --disallow-exit
 # echo "starting xterm..."
 # xterm -maximized &
 echo "starting chrome..."
-google-chrome --disable-gpu --no-default-browser-check --remote-debugging-port=9222 --window-position=0,0 --window-size=1280,720 --no-first-run --disable-dev-shm-usage --kiosk  & # --start-maximized --start-fullscreen
+google-chrome --no-default-browser-check --remote-debugging-port=9222 --window-position=0,0 --window-size=1280,720 --no-first-run --kiosk  & # --start-maximized --start-fullscreen
 sleep 10
 echo "starting chromestage..."
 /bin/chromestage "$start_page" &
