@@ -26,12 +26,23 @@ x11vnc -display $DISPLAY -forever -passwd chromestage &
 sleep 1
 if [ -n "$stream_url" ]; then
   echo "starting ffmpeg..."
-  ffmpeg \
+  # ffmpeg \
+  #   -f x11grab -video_size 1280x720 -framerate 30 -i $DISPLAY \
+  #   -f alsa -i pulse -ac 2 \
+  #   -c:v libx264 -preset veryfast \
+  #   -c:a aac -strict experimental \
+  #   -copyts \
+  #   -f flv "$stream_url"
+  ffmpeg -re \
     -f x11grab -video_size 1280x720 -framerate 30 -i $DISPLAY \
+    -vcodec libvpx -cpu-used 5 -deadline 1 -g 10 -error-resilient 1 -auto-alt-ref 1 \
+    -f rtp "$stream_url"':5004?pkt_size=1200' &
+  #  -sample_fmt s16p \
+  ffmpeg \
     -f alsa -i pulse -ac 2 \
-    -c:v libx264 -preset veryfast -c:a aac -strict experimental \
-    -copyts \
-    -f flv "$stream_url"
+    -c:a libopus -b:a 48000 \
+    -ssrc 1 -payload_type 111 \
+    -f rtp -max_delay 0 -application lowdelay "$stream_url"':5006?pkt_size=1200'
 else
   cat
 fi
