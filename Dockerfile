@@ -9,7 +9,7 @@ RUN apk add --no-cache ca-certificates git
 # Get dependancies - will also be cached if we won't change mod/sum
 RUN go mod download
 
-COPY main.go .
+COPY ./cmd/chromestage .
 RUN CGO_ENABLED=0 GOARCH=amd64 go install -installsuffix "static" .
 
 #########
@@ -48,7 +48,10 @@ ENV XVFB_WHD=1280x720x24
 EXPOSE 5900
 # chromedp
 EXPOSE 9222
+# chomestage+chromedp+novnc
+EXPOSE 8000
 
+COPY ./vnc /vnc
 COPY --from=builder /go/bin /bin
 COPY /start.sh /home/chromium/start.sh
 RUN chmod +x /home/chromium/start.sh
