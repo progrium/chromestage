@@ -37,16 +37,16 @@ func novncHandler(w http.ResponseWriter, r *http.Request) {
 	wg.Add(1)
 	go func() {
 		if _, err := io.Copy(backend, conn); err != nil {
+			backend.Close()
 			fmt.Println(err)
-			return
 		}
 		wg.Done()
 	}()
 	wg.Add(1)
 	go func() {
 		if _, err := io.Copy(conn, backend); err != nil {
+			backend.Close()
 			fmt.Println(err)
-			return
 		}
 		wg.Done()
 	}()
